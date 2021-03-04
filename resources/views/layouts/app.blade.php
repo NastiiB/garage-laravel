@@ -80,6 +80,14 @@
                                 </div>
                             </li>
                         @endguest
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('vehicles.devis') }}">{{ __('Demande de devis') }}</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('announcements.index') }}">{{ __('Les annonces') }}</a>
+                        </li>
                     </ul>
                 </div>
             </div>

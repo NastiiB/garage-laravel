@@ -4,6 +4,7 @@ use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\AnnouncementController;
 use \App\Http\Controllers\Admin;
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +25,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
         Route::put('/settings/money', [UserController::class, 'addMoney'])->name('user.add.money');
         Route::get('/reservations', [UserController::class, 'reservations'])->name('user.show.reservations');
+        Route::get('/create', [AnnouncementController::class, 'create'])->name('announcements.create');
     });
     Route::group(['prefix' => 'vehicles'], function () {
         Route::get('/{id}/reserved', [VehicleController::class, 'reserved'])->name('vehicles.reserved');
         Route::post('/{vehicle}/reserved', [VehicleController::class, 'storeReserved'])->name('vehicules.reserved.store');
+        Route::get('/devis', [VehicleController::class, 'devis'])->name('vehicles.devis');
+        Route::post('/calcul', [VehicleController::class, 'storeDevis'])->name('vehicles.devis.store');
     });
 });
 
@@ -38,3 +42,18 @@ Route::group(['prefix' => 'admin', 'middleware' => [IsAdmin::class]], function (
     Route::get('/vehicles/{id}',[Admin\VehicleController::class, 'show'])->name('admin.vehicle.show');
     Route::put('/vehicles/{id}',[Admin\VehicleController::class, 'update'])->name('admin.vehicle.update');
 });
+
+Route::group(['prefix' => 'announcements'], function () {
+    Route::get('/', [AnnouncementController::class, 'index'])->name('announcements.index');
+    Route::get('/{id}/show', [AnnouncementController::class, 'show'])->name('announcements.show');
+    Route::post('/{id}/store', [AnnouncementController::class, 'store'])->name('announcements.store');
+
+
+//    Route::group(['middleware' => 'auth'], function() {
+//        Route:get('/create', [AnnouncementController::class, 'create'])->name('announcements.create');
+//    })
+});
+
+
+
+

@@ -43,6 +43,8 @@ class VehicleService
         }
     }
 
+
+
     public function getAllVehicles(): Collection
     {
         return Vehicle::all();

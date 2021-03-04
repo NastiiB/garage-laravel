@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\CreateVehicleRequest;
 use App\Http\Requests\ReservedVehicleRequest;
 use App\Services\UserHasNotEnoughMoneyException;
+use Carbon\Carbon;
 
 class VehicleController extends Controller
 {
@@ -76,4 +77,30 @@ class VehicleController extends Controller
             return back()->withErrors(['error' => 'Le véhicule ne peut pas être reservé pendant cette période']);
         }
     }
+
+    public function devis()
+    {
+        $vehicle = Vehicle::all();
+
+        return view('vehicles.devis', ['vehicles' => $vehicle]);
+    }
+
+    public function storeDevis(Request $request)
+    {
+        $vehicle = Vehicle::findOrFail($request->get('vehicle_id'));
+        $starting = $request->get('starting_at');
+        $ending = $request->get('ending_at');
+
+        $vehicleName = $vehicle->name;
+
+        $startingAt = Carbon::parse($starting);
+
+        $days = $startingAt->diffInDays($ending);
+
+        $priceHT = ($days+1)*$vehicle->price;
+        $priceTTC = $priceHT*1.2;
+
+        return view('vehicles.showDevis', ['priceHT' => $priceHT, 'priceTTC' => $priceTTC, 'days' => $days, 'vehicleName' => $vehicleName]);
+    }
+
 }

@@ -33,4 +33,13 @@ class UserController extends Controller
 
         return view('users.reservations', ['reservations' => $reservations]);
     }
+
+    public function devis(Request $request)
+    {
+        $user = $request->user();
+
+        $reservations = $user->vehicles;
+
+        return view('users.reservations', ['reservations' => $reservations]);
+    }
 }
